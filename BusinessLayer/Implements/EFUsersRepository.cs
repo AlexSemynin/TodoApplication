@@ -10,7 +10,7 @@ using BusinessLayer.Interfaces;
 
 namespace BusinessLayer.Implements
 {
-    class EFUsersRepository : IUsersRepo
+    public class EFUsersRepository : IUsersRepo
     {
         RepositoryTodoContext _dbContext;
 
