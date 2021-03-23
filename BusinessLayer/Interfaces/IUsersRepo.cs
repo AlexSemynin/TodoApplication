@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Interfaces
 {
-    public interface IUserRepo
+    public interface IUsersRepo
     {
         Task<User> CreateUser(string email, string password, string name);
         User GetUserById(string userId);
