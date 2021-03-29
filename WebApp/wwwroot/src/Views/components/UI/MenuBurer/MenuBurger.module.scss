@@ -1,0 +1,27 @@
+.MenuBurger{
+    // position: fixed;
+    // top: 40px;
+    // left: 40px;
+    /* background: #fff; */
+    // z-index: 100;
+    // transition: all .25s ease-in;
+    // font-size: 30px;
+    background:none;
+    /* color: white; */
+    color: white;
+    cursor: pointer;
+    user-select: none;
+
+    position: relative;
+    left: 0;
+    z-index: var(--navigate-z);
+    transition: left var(--animation-duration) var(--timing-function);
+
+    // &:hover{
+    //     opacity: 0.7;
+    // }
+
+    &.isOpen{
+        left: calc(100% + var(--paddingVal));
+    }
+}

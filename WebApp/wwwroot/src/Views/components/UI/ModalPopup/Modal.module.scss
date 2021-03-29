@@ -1,0 +1,75 @@
+$border-radius: 10px;
+$padding-side: 2rem;
+.Modal{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: 4px 4px 5px 3px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+    padding: 5 40px;
+
+    // display: flex;
+    // flex-direction: column;
+    // align-content: center;
+    // justify-self: center;
+
+
+    .Header{
+        display: grid;
+        grid-template-columns: $padding-side auto $padding-side;
+
+        text-align: center;
+        &>span:last-child{
+            cursor: pointer;
+            user-select: none;
+            width: 100%;
+            text-align: center;   
+            background-color: rgba(197, 23, 23, 0.279);;
+            border-top-right-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
+            &:hover{
+                background-color: rgba(197, 0, 0, 0.371);;
+            }
+        }
+    }
+    .Content{
+        display: flex;
+        flex-direction: column;
+        padding: $padding-side;
+        height: 100%;
+        justify-content: space-between;
+        .Txt{
+            border: 1px solid black;
+            border-radius: 2px;
+        }
+        i{
+            background-color: #3fd03f80;
+            display: flex;
+            width: 100%;
+            border-radius: 11px;
+            height: 30px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.481);
+            &:hover{
+                background-color: #3fd03fbb;
+            }
+            &:active{
+                box-shadow: inset 3px 3px 2px rgba(0, 0, 0, 0.481);
+            }
+        }
+    }
+
+    &.isActive{
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+    }
+}

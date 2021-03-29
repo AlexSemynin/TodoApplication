@@ -1,0 +1,24 @@
+:root{
+    --linearGradient: linear-gradient(#e66465, #9198e5);
+    /* --linearGradient: linear-gradient(#9198e5, #e66465); */
+    --paddingVal: 20px;
+    --my-color: green; /*background-color: var(--main-bg-color);*/      /*var(--main-bg-color, red);*/
+    --navigate-z: 50;
+    --backdrop-z: 49;
+    --animation-duration: 0.25s;
+    --timing-function: ease-in;
+}
+
+
+body {
+    background: var(--linearGradient);
+    box-sizing: content-box; /*только ширина/высота контента при задниии. Границы, отступы не учитываются*/
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+#root {
+    height: 100vh;
+    width: 100vw;
+}

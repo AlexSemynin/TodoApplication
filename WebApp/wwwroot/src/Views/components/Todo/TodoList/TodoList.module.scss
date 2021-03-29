@@ -1,0 +1,46 @@
+.TodoList{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 4px 4px 5px 3px rgba(0, 0, 0, 0.35);
+    padding: 10px 30px;
+    box-sizing: border-box;
+    overflow: auto;
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.loaderWrapper{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &>div:first-child{
+        height: 100px;
+        width: 100px;
+    }
+}
+
+.AddTodo{
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    font-size: 3em;
+    color: #ffffff80;
+    border-radius: 50%;
+    box-shadow: 2px 2px 2px #00000078;
+
+
+    &:hover{
+        color: #ffffffe3;
+    }
+    &:active{
+        box-shadow: inset 5px 5px 4px #00000078;
+    }
+}

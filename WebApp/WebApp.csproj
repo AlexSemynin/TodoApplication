@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\src\Views\custom.d.tsx" />
+    <Content Remove="wwwroot\src\Views\index.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
@@ -21,8 +26,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\src\" />
     <Folder Include="wwwroot\dir\" />
+    <Folder Include="wwwroot\src\Store\" />
+    <Folder Include="wwwroot\src\Views\App\" />
+    <Folder Include="wwwroot\src\Views\components\" />
+    <Folder Include="wwwroot\src\Views\HOC\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\src\custom.d.tsx" />
+    <TypeScriptCompile Include="wwwroot\src\index.tsx" />
   </ItemGroup>
 
 </Project>
