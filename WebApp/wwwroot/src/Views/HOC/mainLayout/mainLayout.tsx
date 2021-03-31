@@ -6,6 +6,8 @@ import Backdrop from '../../components/UI/BackDrop/Backdrop';
 import MenuBurger from '../../components/UI/MenuBurer/MenuBurger';
 import Checkbox from '../../components/UI/Checkbox/Checkbox';
 import LayoutStore from 'Store/LayoutStore';
+import AutoStore from 'Store/AutoStore';
+import Autorize from '../../components/Autorize/Autorize';
 
 
 export type linkForRouter = string;
@@ -23,7 +25,11 @@ export const navLinks : Array<ILink> = [
 //     isOpen: boolean,
 // }
 
-const mainLayout = inject("LayoutStore")(observer((props: React.PropsWithChildren<{LayoutStore?: LayoutStore}>) => {
+const mainLayout = inject("LayoutStore", "AutoStore")
+    (observer((props:
+        React.PropsWithChildren<{
+            LayoutStore?: LayoutStore,
+            AutoStore?: AutoStore}>) => {
 
 
     const [isOpen, toggleOpen] = useState(false);
@@ -61,6 +67,12 @@ const mainLayout = inject("LayoutStore")(observer((props: React.PropsWithChildre
         )
     }
 
+    const renderProfile = () => {
+        return(
+            <Autorize />
+        );   
+    }
+
     let navCls = isOpen? classes.isOpen : undefined;
 
     return (
@@ -79,7 +91,7 @@ const mainLayout = inject("LayoutStore")(observer((props: React.PropsWithChildre
                         </ul>
                     </nav>                    
                     <div className={classes.profile}>
-                        Hi, Alex 0-0
+                        {renderProfile()}
                     </div>
                     <div className={ classes.options }>
                         { renderOptions() }
