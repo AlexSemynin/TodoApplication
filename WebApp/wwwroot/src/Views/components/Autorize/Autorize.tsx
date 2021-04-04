@@ -152,14 +152,21 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                         autoState.autoPopupType === "REGISTERPOPUP" ? 
                             <Button
                                 type="success"
-                                onClick={() => props.AutoStore?.register("","")}
+                                onClick={() => props.AutoStore?.register(
+                                    formControls.filter(c => c.type === "email")[0].value,
+                                    formControls.filter(c => c.type === "password")[0].value,
+                                    formControls.filter(c => c.type === "text")[0].value
+                                )}
                                 disabled={!isFormVaild}
                             >
                                 Зарегистрироваться
                             </Button> 
                             : <Button
                                 type="success"
-                                onClick={()=> props.AutoStore?.login("","")}
+                                onClick={()=> props.AutoStore?.login(
+                                    formControls.filter(c => c.type === "email")[0].value,
+                                    formControls.filter(c => c.type === "password")[0].value
+                                )}
                                 disabled={!isFormVaild}
                             >
                                 Войти
