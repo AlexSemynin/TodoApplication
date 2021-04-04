@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import classes from './ModalPopup.module.scss';
 import Backdrop from '../../components/UI/BackDrop/Backdrop';
+import { InputFormType, IValidation } from 'Views/components/UI/Input/Input';
 
 
 export type Footer = {isImage: boolean, content: ReactNode};
@@ -19,6 +20,18 @@ export interface IModalProps{
     isOpen: boolean;
     closeHandler: () => void;
 }
+
+export interface IFormControl{
+    value: string;
+    readonly type: InputFormType;
+    readonly label: string;
+    valid: boolean;
+    readonly errorMessage: string | undefined;
+    toched: boolean | undefined;
+    validation: IValidation | undefined;
+}
+
+export type ModalType = "AUTHPOPUP" |  "REGISTERPOPUP" | null;
 
 const modalPopup = (props: React.PropsWithChildren<IModalProps>) => {
 
