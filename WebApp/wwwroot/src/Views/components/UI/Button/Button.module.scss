@@ -9,15 +9,18 @@
     font-weight: bold;
     font-size: 12px;
     cursor: pointer;
+    height: 100%;
+    width: 100%;
+
+    &:focus{
+        outline: none;
+    }
+    &:active{
+        box-shadow: inset 2px 2px 1px rgba(0,0,0,.3);
+    }
+
 }
 
-.Button:focus{
-    outline: none;
-}
-
-.Button:active{
-    box-shadow: inset 2px 2px 1px rgba(0,0,0,.3);
-}
 .Button:disabled{
     background: #ccc;;
     cursor: not-allowed; 

@@ -1,18 +1,26 @@
 import React from 'react';
-// import * as classes from './Input.css';
-const classes = require('./Input.css');
+// const classes = require('./Input.css');
+import classes from './Input.module.scss';
 
 export interface IInputProps{
     label: string;
-    onChange?: ()=>{};
+    onChange: (ev: any)=>void;
     value?: any;
     inputName?: string;
 
     shouldValidate: boolean;
     invalidText?: string;
-    inputType?: "button"|"checkbox"|"file"|"hidden"|"image"|"password"|"radio"|"reset"|"submit"|"text";
+    inputType?: InputFormType;
     valid?: boolean;
     toched?: boolean;
+}
+
+export type InputFormType = "button"|"checkbox"|"file"|"hidden"|"image"|"password"|"radio"|"reset"|"submit"|"text"|"email";
+
+export interface IValidation{
+    requied: boolean;
+    email?: boolean;
+    minLength?: number;
 }
 
 const isInvalid = (valid:boolean|undefined, toched:boolean|undefined, shouldValidate:boolean|undefined ) => {
