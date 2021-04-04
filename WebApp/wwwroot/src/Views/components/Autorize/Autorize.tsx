@@ -1,10 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
 import classes from './Autorize.module.scss';
 import { inject, observer } from 'mobx-react';
-import Input from '../UI/Input/Input';
-import ModalPopup, {IModalProps, Footer} from '../../HOC/ModalPopup/ModalPopup';
-import * as interfaces from '../../../Store/interfaces/IViews';
+import Input, { IValidation } from '../UI/Input/Input';
+import ModalPopup, {IModalProps, Footer, ModalType, IFormControl} from '../../HOC/ModalPopup/ModalPopup';
 import AutoStore from '../../../Store/AutoStore';
+import Button, {ButtonType} from '../UI/Button/Button';
 
 
 
@@ -12,51 +12,130 @@ type OpenType = boolean | null;
 
 interface IAuthState {
     isOpen: OpenType;
-    autoPopupType: interfaces.ModalType;
+    autoPopupType: ModalType;
 }
 
 
 const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{AutoStore?: AutoStore}>) => {
 
     const [autoState, changeState] = useState<IAuthState>({isOpen: false, autoPopupType: null});
+    const [isFormVaild, changeValidForm] = useState(false);
+    const [formControls, changeControls] = useState<Array<IFormControl>>([
+        {
+            value: '',
+            type: 'email',
+            label: 'EMAIL',
+            errorMessage: 'Введите корректный email',
+            valid: false,
+            toched: false,
+            validation: {
+                requied: true,
+                email: true
+            }
+          },
+          {
+            value: '',
+            type: "password",
+            label: 'Пароль',
+            errorMessage: 'Введите корректный пароль',
+            valid: false,
+            toched: false,
+            validation: {
+                requied: true,
+                minLength: 6
+            }
+          },
+          {
+            value: '',
+            label: "Имя",
+            type: "text",
+            valid: true,
+            errorMessage: undefined,
+            toched: undefined,
+            validation: undefined
+          }
+    ]);
+
     
 
-    const formControls : Array<interfaces.IFormControl> = [
-        {
-          value: '',
-          type: interfaces.IFormType.email,
-          label: 'EMAIL',
-          errorMessage: 'Введите корректный email',
-          valid: false,
-          toched: false,
-          validation: {
-              requied: true,
-              email: true
-          }
-        },
-        {
-          value: '',
-          type: interfaces.IFormType.password,
-          label: 'Пароль',
-          errorMessage: 'Введите корректный пароль',
-          valid: false,
-          toched: false,
-          validation: {
-              requied: true,
-              minLength: 6
-          }
-        },
-        {
-          value: '',
-          label: "Имя",
-          type: interfaces.IFormType.name,
-          valid: true,
-          errorMessage: undefined,
-          toched: undefined,
-          validation: undefined
-        }
-      ];
 
+    const renderInputs = (authType?: ModalType)=>{
+        let controls = [...formControls];
+        if(authType == "AUTHPOPUP"){
+            controls = controls.filter(control => control.type !== "text");
+        }
+
+        return controls.map((control, index) =>{
+            return(
+                <Input
+                    key={control.type.toString()+index}
+                    value={control.value}
+                    inputType={control.type}
+                    label={control.label}
+                    invalidText={control.errorMessage}
+                    valid={control.valid}
+                    toched={control.toched}
+                    shouldValidate={!!control.validation}
+                    onChange={(ev: any) => onChangeHandler(ev,control)}
+                />
+            )
+        });
+    }
+    const onChangeHandler = (ev: any, control: IFormControl) => {
+        // const formControls = JSON.parse(JSON.stringify(this.formControls));; // копировать контролы для дальнейшего их изменения easy 
+        const _formControls = [...formControls];
+        // const control = formControls[controlName];
+        control.toched = true;
+        control.value = ev.target.value;
+        control.valid = isValidControl(ev.target.value, control.validation);
+
+        _formControls.forEach(c => {
+            if(c==control){ 
+                Object.assign(c, control);
+             }
+        });
+        
+        changeControls(_formControls);
+        const isAllControlValid = formControls.every(control => {return control.valid});
+
+        changeValidForm(isAllControlValid);
+    }
+
+    const isValidControl = (value: string, validation?: IValidation) => {
+        if(!validation) return true; //если кнотрол не нужно валидировать
+
+        let isValid = true; 
+
+        if(validation.requied){
+            isValid = value.trim() !== "";
+        }
+        if(validation.email){
+            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            isValid = re.test(String(value).toLowerCase());
+        }
+        if(validation.minLength){
+            isValid = value.length >= validation.minLength;
+        }
+
+        return isValid;
+    }
+    
+    const clearInputs = () => {
+        formControls.forEach((control, i)=>{
+            control.value = "";
+            control.toched=false;
+        });
+    }
+
+
+    const renderContent = () => {
+
+        return(
+            <div className={classes.inputsWrapper}>
+                {renderInputs(autoState.autoPopupType)}
+            </div>
+        )
+    }
 
 
     const headerText = autoState.isOpen === null ? "" 
@@ -71,8 +150,20 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                 {
                     autoState.isOpen === null ? "" :
                         autoState.autoPopupType === "REGISTERPOPUP" ? 
-                            <button>Зарегистрироваться</button> 
-                            : <button>Войти</button> 
+                            <Button
+                                type="success"
+                                onClick={() => props.AutoStore?.register("","")}
+                                disabled={!isFormVaild}
+                            >
+                                Зарегистрироваться
+                            </Button> 
+                            : <Button
+                                type="success"
+                                onClick={()=> props.AutoStore?.login("","")}
+                                disabled={!isFormVaild}
+                            >
+                                Войти
+                            </Button>
                 }
             </div>
         )
@@ -84,6 +175,8 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
 
     const closePopup = () => {
         changeState({isOpen: false, autoPopupType: null});
+        clearInputs();
+        changeValidForm(false);
     };
 
     return(
@@ -99,8 +192,8 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                     <button onClick={()=>props.AutoStore?.logout()}>logout</button>
                 </React.Fragment> :
                 <React.Fragment>
-                    <button onClick={() => openPopup(false)}>login</button>
-                    <button onClick={() => openPopup(true)}>register</button>
+                    <Button disabled={false} type="success" onClick={() => openPopup(false)}>login</Button>
+                    <Button disabled={false} type="success" onClick={() => openPopup(true)}>register</Button>
                 </React.Fragment>
                 }
             </div>
@@ -114,123 +207,13 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                     isOpen={autoState.isOpen}
                     closeHandler={closePopup}
                 >
-                    <div>content</div>
+                    <div>{renderContent()}</div>
                 </ModalPopup>
                 :
                 undefined
             }
-
-
-
-
-
-
-
         </React.Fragment>
     )
-
-
-    //   const renderInputs = (authType?: interfaces.ModalType)=>{
-    //     let controls = [...formControls];
-    //     if(authType == "AUTHPOPUP"){
-    //         controls = controls.filter(control => control.type !== interfaces.IFormType.name);
-    //     }
-
-    //     return controls.map((control, index) =>{
-    //         return(
-    //             <Input
-    //                 key={control.type.toString()+index}
-    //                 value={control.value}
-    //                 inputType={control.type}
-    //                 label={control.label}
-    //                 invalidText={control.errorMessage}
-    //                 valid={control.valid}
-    //                 toched={control.toched}
-    //                 shouldValidate={!!control.validation}
-    //                 onChange={(ev) => this.onChangeHandler(ev,control)}
-    //             />
-    //         )
-    //     });
-    // }
-
-
-    // onChangeHandler(ev, control: interfaces.IFormControl){
-    //     // const formControls = JSON.parse(JSON.stringify(this.formControls));; // копировать контролы для дальнейшего их изменения easy 
-    //     const formControls = [...this.formControls];
-    //     // const control = formControls[controlName];
-    //     control.toched = true;
-    //     control.value = ev.target.value;
-    //     control.valid = this.IsValidControl(ev.target.value, control.validation);
-
-    //     formControls.forEach(c => {
-    //         if(c==control){ 
-    //             Object.assign(c, control);
-    //          }
-    //     });
-        
-    //     this.formControls = formControls;
-    //     const isAllControlValid = formControls.every(control => {return control.valid});
-
-    //     // this.formControls = formControls;
-    //     this.isFormValid = isAllControlValid;
-
-    // }
-
-    // IsValidControl(value, validation){
-    //     if(!validation) return true; //если кнотрол не нужно валидировать
-
-    //     let isValid = true; 
-
-    //     if(validation.requied){
-    //         isValid = value.trim() !== "";
-    //     }
-    //     if(validation.email){
-    //         const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //         isValid = re.test(String(value).toLowerCase());
-    //     }
-    //     if(validation.minLength){
-    //         isValid = value.length >= validation.minLength;
-    //     }
-
-    //     return isValid;
-    // }
-    // ClearInputs(){
-    //     Object.keys(this.formControls).forEach((controlName, i) => {
-    //         this.formControls[controlName].value = "";
-    //         this.formControls[controlName].toched = false;
-    //     });
-    // }
-
-
-
-    // const submitHandler1 = (ev: SyntheticEvent) => {
-    //     const input : HTMLInputElement | null = document.querySelector(`.${classes.Txt}`);
-    //     const value = input?.value.trimStart().trimEnd();
-    //     let todo: ITodo;
-    //     if(value && input){
-    //         todo = {text: value, isComplited: false};
-    //         props.submitHandler(todo);
-    //         input.value = '';
-    //     }
-    // }
-
-    // const content = (
-    //     <div className={classes.contentWrapper}>
-    //         <
-    //     </div>
-    // )
-
-    // const modalProps: IModalProps = {
-    //     headerText: props.isRegister ? "Регистрация" : "Авторизация",
-    //     content:
-    // }
-
-    // return(
-    //     <ModalPopup >
-
-    //     </ModalPopup>
-
-    // )
 }));
 
 export default Autorize;
