@@ -52,8 +52,8 @@ namespace WebApp.Controllers
             var response = new
             {
                 access_token = encodedJwt,
-                email = identity.Name,
-                userId = _user.Id
+                email = _user.Email,
+                userId = identity.Name
             };
 
             return Ok(response);
@@ -66,7 +66,7 @@ namespace WebApp.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email)
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Id)
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
