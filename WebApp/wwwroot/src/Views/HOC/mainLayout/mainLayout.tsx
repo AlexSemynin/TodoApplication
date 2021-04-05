@@ -8,6 +8,7 @@ import Checkbox from '../../components/UI/Checkbox/Checkbox';
 import LayoutStore from 'Store/LayoutStore';
 import AutoStore from 'Store/AutoStore';
 import Autorize from '../../components/Autorize/Autorize';
+import { History } from 'history/index';
 
 
 export type linkForRouter = string;
@@ -15,21 +16,24 @@ export interface ILink {
     to: linkForRouter;
     label: string;
     exact: boolean;
+    forAutorize: boolean;
 }
 export const navLinks : Array<ILink> = [
-    { to: '/', label: 'Counter', exact: true },
-    { to: '/todos', label: 'тудухи', exact: false}
+    { to: '/', label: 'Главная', exact: true, forAutorize:false },
+    { to: '/todos', label: 'тудухи', exact: false, forAutorize: true}
 ]
 
 // type MainLayoutState = {
 //     isOpen: boolean,
 // }
 
-const mainLayout = inject("LayoutStore", "AutoStore")
+const mainLayout = inject("LayoutStore", "AutoStore", "LocationInfo")
     (observer((props:
         React.PropsWithChildren<{
             LayoutStore?: LayoutStore,
-            AutoStore?: AutoStore}>) => {
+            AutoStore?: AutoStore,
+            LocationInfo?: History,
+        }>) => {
 
 
     const [isOpen, toggleOpen] = useState(false);
@@ -41,7 +45,7 @@ const mainLayout = inject("LayoutStore", "AutoStore")
     }
 
     const renderLinks = () => {
-        return navLinks.map((link: ILink, i: number) => {
+        return navLinks.filter(link=>{return (!link.forAutorize || (link.forAutorize && props.AutoStore?.isLogin) )}).map((link: ILink, i: number) => {
             return (
                 <li key={`navItemNumber_${i}`}>
                     <NavLink

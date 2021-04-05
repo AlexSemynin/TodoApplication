@@ -5,7 +5,7 @@ import Input, { IValidation } from '../UI/Input/Input';
 import ModalPopup, {IModalProps, Footer, ModalType, IFormControl} from '../../HOC/ModalPopup/ModalPopup';
 import AutoStore from '../../../Store/AutoStore';
 import Button, {ButtonType} from '../UI/Button/Button';
-
+import { History } from 'history/index';
 
 
 type OpenType = boolean | null;
@@ -16,10 +16,11 @@ interface IAuthState {
 }
 
 
-const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{AutoStore?: AutoStore}>) => {
+const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.PropsWithChildren<{AutoStore?: AutoStore, LocationInfo?: History,}>) => {
 
     const [autoState, changeState] = useState<IAuthState>({isOpen: false, autoPopupType: null});
     const [isFormVaild, changeValidForm] = useState(false);
+    const [isFormLoading, changeStateFormLoader] = useState(false);
     const [formControls, changeControls] = useState<Array<IFormControl>>([
         {
             value: '',
@@ -152,21 +153,32 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                         autoState.autoPopupType === "REGISTERPOPUP" ? 
                             <Button
                                 type="success"
-                                onClick={() => props.AutoStore?.register(
-                                    formControls.filter(c => c.type === "email")[0].value,
-                                    formControls.filter(c => c.type === "password")[0].value,
-                                    formControls.filter(c => c.type === "text")[0].value
-                                )}
+                                onClick={async () => {
+                                    changeStateFormLoader(true);
+                                    await props.AutoStore?.register(
+                                        formControls.filter(c => c.type === "email")[0].value,
+                                        formControls.filter(c => c.type === "password")[0].value,
+                                        formControls.filter(c => c.type === "text")[0].value
+                                    );
+                                    changeStateFormLoader(false);
+                                    changeState({isOpen: false, autoPopupType: null});
+                                }}
                                 disabled={!isFormVaild}
                             >
                                 Зарегистрироваться
                             </Button> 
                             : <Button
                                 type="success"
-                                onClick={()=> props.AutoStore?.login(
-                                    formControls.filter(c => c.type === "email")[0].value,
-                                    formControls.filter(c => c.type === "password")[0].value
-                                )}
+                                onClick={async () => {
+                                    changeStateFormLoader(true);
+                                    await props.AutoStore?.login(
+                                        formControls.filter(c => c.type === "email")[0].value,
+                                        formControls.filter(c => c.type === "password")[0].value
+                                    );
+                                    changeStateFormLoader(false);
+                                    changeState({isOpen: false, autoPopupType: null});
+                                    props.LocationInfo?.push("/todos");
+                                }}
                                 disabled={!isFormVaild}
                             >
                                 Войти
@@ -196,7 +208,7 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                 {props.AutoStore?.isLogin ?
                 <React.Fragment>
                     <span>Hi, {props.AutoStore.getUser?.name ?? props.AutoStore.getUser?.email}</span>
-                    <button onClick={()=>props.AutoStore?.logout()}>logout</button>
+                    <button onClick={()=>{props.AutoStore?.logout(); props.LocationInfo?.push("/")}}>logout</button>
                 </React.Fragment> :
                 <React.Fragment>
                     <Button disabled={false} type="success" onClick={() => openPopup(false)}>login</Button>
@@ -213,6 +225,7 @@ const Autorize = inject("AutoStore")( observer((props: React.PropsWithChildren<{
                     footer={footer}
                     isOpen={autoState.isOpen}
                     closeHandler={closePopup}
+                    isLoading={isFormLoading}
                 >
                     <div>{renderContent()}</div>
                 </ModalPopup>

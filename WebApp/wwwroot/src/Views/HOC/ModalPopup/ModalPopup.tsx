@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import classes from './ModalPopup.module.scss';
 import Backdrop from '../../components/UI/BackDrop/Backdrop';
 import { InputFormType, IValidation } from 'Views/components/UI/Input/Input';
+import Loader from '../../components/UI/Loader/Loader';
 
 
 export type Footer = {isImage: boolean, content: ReactNode};
@@ -19,6 +20,7 @@ export interface IModalProps{
 
     isOpen: boolean;
     closeHandler: () => void;
+    isLoading: boolean;
 }
 
 export interface IFormControl{
@@ -47,7 +49,11 @@ const modalPopup = (props: React.PropsWithChildren<IModalProps>) => {
 
         return(
             <React.Fragment>
-                <span></span>
+                <span>
+                {
+                    <Loader isActive={props.isLoading}/>
+                }
+                </span>
                 <span>{props.headerText}</span>
                 <span onClick={props.closeHandler}><i className={"fa fa-times"}/></span>    
             </React.Fragment>

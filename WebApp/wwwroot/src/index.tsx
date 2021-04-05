@@ -7,12 +7,12 @@ import App from './Views/App/App';
 import { createBrowserHistory } from 'history';
 import MainStore from './Store/MainStore';
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 const mainStore = new MainStore();
 
 ReactDOM.render(
     <Provider MainStore={mainStore} {...mainStore}>
-        <Router history={history}>
+        <Router history={mainStore.LocationInfo}>
             <App />
         </Router>
     </Provider>,
