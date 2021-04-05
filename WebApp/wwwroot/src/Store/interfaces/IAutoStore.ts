@@ -1,7 +1,7 @@
 export type User = {
     email: string;
     password: string;
-    token: string;
+    access_token: string;
     name?: string;
 } | null;
 

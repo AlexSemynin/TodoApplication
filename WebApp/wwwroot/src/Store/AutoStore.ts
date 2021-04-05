@@ -6,7 +6,8 @@ export default class AutoStore implements IAutoStore {
     constructor(mainStore: IMainStore){
         makeObservable(this);
         this._mainStore = mainStore;
-        this._user = <User>localStorage.getItem("user") ?? null;
+        // const user = localStorage.getItem("user");
+        this._user =  localStorage.getItem("user") ?? null;
         this.isLogin = !!this._user;
     }
 
@@ -14,11 +15,13 @@ export default class AutoStore implements IAutoStore {
 
     private _mainStore: IMainStore;
 
-    private _user: User;
+    @observable
+    private _user: string | null;
 
     @computed
     get getUser() : User{
-        return this._user;
+        const user = this._user;
+        return user ? JSON.parse(user) : null;
     }
 
     @observable
@@ -41,7 +44,8 @@ export default class AutoStore implements IAutoStore {
                 const message = JSON.parse(await response.text()).errorText;
                 throw new Error(`Ответ сервера: ${message}`);
             }else{
-                this._user = await response.json();
+                this._user = await response.text();
+                localStorage.setItem("user", this._user);
                 this.isLogin = true;
                 this.autoLogout(this._autoLogoutMCec);
             }
@@ -81,6 +85,7 @@ export default class AutoStore implements IAutoStore {
     async logout(){
         localStorage.removeItem("user");
         this.isLogin = false;
+        this._user = null;
         // Redirect to homePage
     }
 
