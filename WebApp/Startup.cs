@@ -2,6 +2,7 @@ using BusinessLayer;
 using BusinessLayer.Implements;
 using BusinessLayer.Interfaces;
 using DataLayer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,12 +10,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebApp.Models;
 
 namespace WebApp
 {
@@ -51,6 +54,31 @@ namespace WebApp
 
             services.AddScoped<DataManager>();
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // ��������, ����� �� �������������� �������� ��� ��������� ������
+                            ValidateIssuer = true,
+                            // ������, �������������� ��������
+                            ValidIssuer = AuthOptions.ISSUER,
+
+                            // ����� �� �������������� ����������� ������
+                            ValidateAudience = true,
+                            // ��������� ����������� ������
+                            ValidAudience = AuthOptions.AUDIENCE,
+                            // ����� �� �������������� ����� �������������
+                            ValidateLifetime = true,
+
+                            // ��������� ����� ������������
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            // ��������� ����� ������������
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
+
             services.AddControllersWithViews();
 
         }
@@ -72,6 +100,10 @@ namespace WebApp
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
