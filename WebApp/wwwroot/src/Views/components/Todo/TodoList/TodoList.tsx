@@ -6,16 +6,22 @@ import Loader from '../../UI/Loader/Loader';
 import TodoItem from '../TodoItem/TodoItem';
 import Modal from '../../UI/ModalPopup/Modal';
 import ModalStore from 'Store/ModalStore';
+import AutoStore from 'Store/AutoStore';
 
 
-@inject("TodoStore", "ModalStore")
+@inject("TodoStore", "ModalStore","AutoStore")
 @observer
-export default class TodoList extends React.Component<{TodoStore: TodoStore, ModalStore: ModalStore}> {
+export default class TodoList extends React.Component<{TodoStore: TodoStore, ModalStore: ModalStore, AutoStore: AutoStore}> {
 
     private get todoStore() {
         return this.props.TodoStore;
     }
-    constructor(props: {TodoStore: TodoStore, ModalStore: ModalStore}){
+
+    private get autoStore(){
+        return this.props.AutoStore;
+    }
+
+    constructor(props: {TodoStore: TodoStore, ModalStore: ModalStore, AutoStore: AutoStore}){
         super(props);
         // this.isLoading = false;
     }
