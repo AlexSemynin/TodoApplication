@@ -32,7 +32,14 @@ export default class TodoStore{
 
     @action
     async LoadTodos() : Promise<void|never> {
-        const response = await fetch("/api/todos");
+        const token = this._mainStore.AutoStore.getUser?.access_token;
+        const response = await fetch("/api/todos",{
+            method: "GET",
+            headers:{
+                "Accept": "application/json",
+                "Authorization": "Bearer " + token  // передача токена в заголовке
+            }
+        });
         if (!response.ok) {
             const message = JSON.parse(await response.text()).errorText;
             throw new Error(`Ответ сервера: ${message}`);
@@ -43,19 +50,26 @@ export default class TodoStore{
 
     @computed
     get Todos(): Array<ITodo> | null {
-        return this._todos;
+        return this._mainStore.AutoStore.isLogin ? this._todos : null;
+    }
+
+    @action
+    ClearStore(){
+        this._todos = null;
     }
 
     @action
     async AddTodo(todo: ITodo): Promise<boolean | never> {
+       const token = this._mainStore.AutoStore.getUser?.access_token;
        const headers = new Headers();
        headers.append("Content-Type", "application/json");
+       headers.append("Authorization", "Bearer " + token)
        const response = await fetch("api/todos", {
            method: "POST",
            headers,
            body: JSON.stringify({
                text: todo.text,
-               isComplited: todo.isComplited
+               isComplited: todo.isComplited ?? false
            })
        });
        if(!response.ok){
@@ -69,28 +83,40 @@ export default class TodoStore{
 
     @action
     async UpdateTodo(todo: ITodo) {
-       const response = await fetch("api/todos", {
-           method: "PUT",
-           headers: {
+        const token = this._mainStore.AutoStore.getUser?.access_token;
+        const response = await fetch("api/todos", {
+            method: "PUT",
+            headers: {
                 'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
             },
-           body: JSON.stringify(todo)
-       });
-       if(!response.ok){
-           const message = JSON.parse(await response.text()).errorText;
-           throw new Error(`Ответ сервера: ${message}`);
-       }
-       const res = await response.json();
-    //    this._todos?.filter(t=>t.id == todo.id)
-       console.log(res);
+            body: JSON.stringify(todo)
+        });
+        if(!response.ok){
+            const message = JSON.parse(await response.text()).errorText;
+            throw new Error(`Ответ сервера: ${message}`);
+        }
+        const res = <ITodo>await response.json();
+        this._todos?.forEach(t => {
+            if(t.id == todo.id){
+                todo = res;    
+            }
+        });
+       
+       
     }
 
     @action
     async RemoveTodo(id?: string) {
-       const response = await fetch(`api/todos/${id}`, {
-           method: "DELETE"
-       });
-       if(!response.ok){
+        const token = this._mainStore.AutoStore.getUser?.access_token;
+        const response = await fetch(`api/todos/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            }
+        });
+        if(!response.ok){
            const message = JSON.parse(await response.text()).errorText;
            throw new Error(`Ответ сервера: ${message}`);
        }
