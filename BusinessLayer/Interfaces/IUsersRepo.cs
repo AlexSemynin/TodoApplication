@@ -14,5 +14,6 @@ namespace BusinessLayer.Interfaces
         User GetRegisterUser(string email, string password);
 
         Task<User> SaveUser(string email, string password, string name);
+        List<Todo> GetTodos(string userId);
     }
 }

@@ -19,6 +19,14 @@ namespace BusinessLayer.Implements
             _dbContext = dbContext;
         }
 
+        public List<Todo> GetTodos(string userId)
+        {
+            var user = GetUserById(userId);
+            var todos = _dbContext.Todos.Where(todo => todo.UserId == userId).ToList();
+            return todos;
+
+        }
+
         public async Task<User> CreateUser(string email, string password, string name = "")
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);

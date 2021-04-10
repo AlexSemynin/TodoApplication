@@ -15,5 +15,6 @@ namespace Models
         public bool IsComplited { get; set; }
 
         public string UserId { get; set; }
+        //public User User { get; set; }
     }
 }

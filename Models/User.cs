@@ -19,7 +19,7 @@ namespace Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public IEnumerable<Todo> Todos { get; set; }
+        public List<Todo> Todos { get; set; }
 
         public DateTime? RegisterDate { get; set; }
 
