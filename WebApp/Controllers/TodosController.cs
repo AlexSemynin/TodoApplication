@@ -2,6 +2,7 @@
 using DataLayer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,67 @@ namespace WebApp.Controllers
         // GET: api/<TodosController>
         [HttpGet]
         [Authorize]
-        [Route("getlogin")]
-        public IActionResult Get()
+        public ActionResult<List<Todo>> Get()
         {
-            var u = User.Identity.Name;
+            var userId = User.Identity.Name;
+            var todos = _dataManager.Users.GetTodos(userId);
 
-            return Ok(u);
+            return Ok(todos);
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Todo>> Create([FromBody] WebApp.Models.Todo todo)
+        {
+            if (todo == null)
+            {
+                return BadRequest();
+            }
+
+            //var user = _dataManager.Users.GetUserById(User.Identity.Name);
+            var userId = User.Identity.Name;
+
+            var newTodo = _dataManager.Todos.Create(userId, todo.Text, todo.IsComplited);
+
+
+
+            //_dbContext.Todos.Update(todo);
+            //await _dbContext.SaveChangesAsync();
+            return Ok(newTodo);
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<Todo>> Put([FromBody] Models.Todo todo)
+        {
+            var newTodo = await _dataManager.Todos.GetTodoById(todo.Id);
+            if (newTodo is null)
+            {
+                return BadRequest("todo is null");
+            }
+            newTodo.Text = todo.Text;
+            newTodo.IsComplited = todo.IsComplited;
+            _context.Todos.Update(newTodo);
+            await _context.SaveChangesAsync();
+            return Ok(newTodo);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public ActionResult Delete(string id)
+        {
+            try
+            {
+                _dataManager.Todos.Remove(id);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
 
         // // GET api/<TodosController>/5
         // [HttpGet("{id}")]
