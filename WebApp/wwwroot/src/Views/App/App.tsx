@@ -23,7 +23,7 @@ export default class App extends React.Component<{AutoStore?: AuthStore}> {
                     this.authStore.isLogin ? 
                     <Switch>
                         <Route exact={true} path="/" component={MainPage} />
-                        <Route exact={true} path="/Todo" component={Todo}/>
+                        <Route exact={true} path="/todos" component={Todo}/>
                     </Switch> 
                     :
                     <Switch>
