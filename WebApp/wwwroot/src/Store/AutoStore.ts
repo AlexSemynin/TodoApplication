@@ -86,6 +86,7 @@ export default class AutoStore implements IAutoStore {
         localStorage.removeItem("user");
         this.isLogin = false;
         this._user = null;
+        this._mainStore.TodoStore.ClearStore();
         // Redirect to homePage
     }
 
