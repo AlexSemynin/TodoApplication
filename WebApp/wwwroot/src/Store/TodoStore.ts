@@ -98,11 +98,12 @@ export default class TodoStore{
             throw new Error(`Ответ сервера: ${message}`);
         }
         const res = <ITodo>await response.json();
-        this._todos?.forEach(t => {
+        this._todos = this._todos?.map(t => {
             if(t.id == todo.id){
-                todo = res;    
+                return res;    
             }
-        });
+            return t;
+        })??null;
        
        
     }
