@@ -21,6 +21,9 @@ li.Item{
             border: 3px solid black;
             border-radius: 50%;
             margin-right: 25px;
+            &.deco{
+                background-color: rgba(19, 19, 245, 0.7);
+            }
         }
         span.text{
             // display: inline-block;
@@ -36,10 +39,6 @@ li.Item{
             width: 100%;
             z-index: 1;
             opacity: 0;
-
-            &:checked+.knobs{
-                background-color: rgba(19, 19, 245, 0.7);
-            };
 
             // &:checked+span.text{
             //     text-decoration: line-through;

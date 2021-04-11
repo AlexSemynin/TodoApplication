@@ -44,11 +44,11 @@ export default class TodoItem extends React.Component<propsTodo, IState>{
                 {/* <div className={classes['todo-wrapper']}> */}
                     <div className={classes['text-wrapper']}>
                         <input className={classes.complited} type="checkbox" defaultChecked={todo.isComplited} onChange={()=>{this.props.changeHandler(todo, changeTodoType.checkbox)}}/>
-                        <div className={classes.knobs}></div>
+                        <div className={`${classes.knobs} ${todo.isComplited?classes.deco:""}`}></div>
                         <span className={clsTextDeco.join(" ")}>{todo.text}</span>
                     </div>
                     <div className={classes['button-wrapper']}>
-                        <i className='fas fa-edit'/>
+                        <i className='fas fa-edit' onClick={()=>{this.props.changeHandler(todo, changeTodoType.text)}}/>
                         <i className="fa fa-times" onClick={()=>{this.props.changeHandler(todo, changeTodoType.remove)}}/>
                         <i className="fas fa-ellipsis-h"/>
                     </div>
