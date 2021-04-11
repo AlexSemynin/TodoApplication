@@ -44,7 +44,8 @@ export default class TodoStore{
             const message = JSON.parse(await response.text()).errorText;
             throw new Error(`Ответ сервера: ${message}`);
         }else{
-            this._todos = await response.json();
+            const todos = <Array<ITodo>> await response.json();
+            this._todos = todos.length ? todos.reverse() : null;
         }
     }
 
