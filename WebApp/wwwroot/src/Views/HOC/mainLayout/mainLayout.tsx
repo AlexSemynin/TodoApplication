@@ -9,6 +9,7 @@ import LayoutStore from 'Store/LayoutStore';
 import AutoStore from 'Store/AutoStore';
 import Autorize from '../../components/Autorize/Autorize';
 import { History } from 'history/index';
+import SunMovingReference from '../../svgs/SunMovingReference';
 
 
 export type linkForRouter = string;
@@ -84,7 +85,7 @@ const mainLayout = inject("LayoutStore", "AutoStore", "LocationInfo")
             <div className={classes.MainLayout}>
                 <header>
                     <div className={classes.logo}>
-                        icon
+                        <SunMovingReference/>
                     </div>
                     <div className={classes["burger-menu"]}>
                         {renderMenuBurger(isOpen)}

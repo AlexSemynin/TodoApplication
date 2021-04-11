@@ -1,0 +1,26 @@
+:root {
+    --sun-color: #e9a33c;
+  }
+
+.SunMovingReference{
+    width: 100%;
+    height: 100%;
+    transition: all .3s ease-out;
+    // transition: position .3s ease-out;
+    svg{
+      width: 100%;
+      height: 100%;
+    }
+    &:hover{
+      transform: translate(250px, 100px) scale(2.5);
+      // position: absolute;
+      // width: 70%;
+      // height: 70%;
+      // top:50%;
+      // left: 50%;
+      // transform: translate(-50%,-50%);
+    }
+ }
+ .abstraction-white-color{
+   fill: #fff;
+}

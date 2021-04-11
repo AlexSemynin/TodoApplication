@@ -1,0 +1,47 @@
+.cls-1 {
+    font-size: 52px;
+    font-family: MyriadPro-Regular, Myriad Pro;
+    fill: black;
+    font-weight: 700;
+}
+
+.cls-5 {
+    fill: #1d1d1b;
+}
+
+.cls-2, .cls-4 {
+    fill: #fff;
+}
+.cls-2{
+    opacity: 0;
+}
+.cls-2, .cls-6 {
+    stroke: #1d1d1b;
+    stroke-miterlimit: 10;
+}
+
+.cls-2 {
+    stroke-width: 0.75px;
+}
+
+.cls-6 {
+    fill: #706f6f;
+    stroke-width: 2px;
+}
+
+.cls-7 {
+    /* fill: #614524; */
+    fill: #706f6f;
+}
+
+.cls-8 {
+    /* fill: #2d5447; */
+    fill: #706f6f;
+}
+
+.cls-9 {
+    fill: #716f6f;
+}
+a{
+    fill: white;
+}
