@@ -61,41 +61,11 @@ import classes from './MainPage.module.scss';
 // }
 
 const MainPage = inject("AutoStore")(observer((props: React.PropsWithChildren<{AutoStore?: AutoStore}>) => {
-    const [data, SetData] = useState("");
-
-    const submitRequest = async() => {
-        try{
-            const token = props.AutoStore?.getUser?.access_token;
-            let response = await fetch('api/todos/getlogin', {
-                method: "GET",
-                headers:{
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + token  // передача токена в заголовке
-                }
-            });
-            if (!response.ok) {
-                const message = JSON.parse(await response.text()).errorText;
-                throw new Error(`Ответ сервера: ${message}`);
-            }else{
-                const data = await response.text();
-                SetData(data);
-            }
-        }catch(e){
-            throw new Error(e);
-        }
-    }
 
     return(
-        <div>
-            {console.log(props.AutoStore?.getUser?.access_token)}
-            <button onClick={() => submitRequest()}>Сделать запрос</button>
-            <div>
-                {
-                    !!data && props.AutoStore?.isLogin ?
-                    <span>{data}</span>
-                    :<span>тут будет отображаться инфо о пользователе</span>
-                }
-            </div>
+        <div className={classes.MainPage}>
+            <h2>Все не наше, а чужое...</h2>
+            <h1>Только время наша собственность</h1>
         </div>
     )
 }));
