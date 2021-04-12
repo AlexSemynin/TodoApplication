@@ -147,7 +147,7 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
     const footer: Footer= {
         isImage: false,
         content: (
-            <div>
+            <React.Fragment>
                 {
                     autoState.isOpen === null ? "" :
                         autoState.autoPopupType === "REGISTERPOPUP" ? 
@@ -184,7 +184,7 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
                                 Войти
                             </Button>
                 }
-            </div>
+            </React.Fragment>
         )
     };
 
@@ -208,7 +208,7 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
                 {props.AutoStore?.isLogin ?
                 <React.Fragment>
                     <span>Hi, {props.AutoStore.getUser?.name ?? props.AutoStore.getUser?.email}</span>
-                    <button onClick={()=>{props.AutoStore?.logout(); props.LocationInfo?.push("/")}}>logout</button>
+                    <Button type="primary" disabled={false} onClick={()=>{props.AutoStore?.logout(); props.LocationInfo?.push("/")}}>logout</Button>
                 </React.Fragment> :
                 <React.Fragment>
                     <Button disabled={false} type="success" onClick={() => openPopup(false)}>login</Button>
