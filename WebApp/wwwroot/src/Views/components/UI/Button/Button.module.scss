@@ -1,16 +1,20 @@
+$success-color: rgba(161,240,69,1);
+$primari-color: #2884f6;
+$error-color: rgba(240, 87, 108, 1);
+
 .Button{
     display: inline-block;
     padding: 10px 20px;
     border-radius: 4px;
     border: 1px solid #ccc;
     color: #000;
-    margin-right: 15px;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 12px;
     cursor: pointer;
     height: 100%;
     width: 100%;
+    line-height: 0;
 
     &:focus{
         outline: none;
@@ -27,12 +31,16 @@
 }
 
 .error{
-    background: rgba(240, 87, 108, 1);
+    background: $error-color;
 }
 .success{
-    background: rgba(161,240,69,1);
+    background: $success-color;
 }
 .primary{
-    background: #2884f6;
+    background: $primari-color;
     color: #fff;
+}
+.success-img{
+    padding: 0;
+    background-color: $success-color;
 }

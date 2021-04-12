@@ -8,7 +8,7 @@ import Modal from '../../UI/ModalPopup/Modal';
 import ModalStore from 'Store/ModalStore';
 import AutoStore from 'Store/AutoStore';
 import ModalPopup, { Footer } from '../../../HOC/ModalPopup/ModalPopup';
-import Input from 'Views/components/UI/Input/Input';
+import Button from '../../UI/Button/Button';
 
 
 interface IState{
@@ -153,7 +153,14 @@ export default class TodoList extends React.Component<{TodoStore: TodoStore, Mod
                 content = <input id={classes.popupContentInputId} value={this.state.changedTodoInputState} type="text" onChange={(e)=>{this.updateTodoItemText(e)}}/>;
                 footer = {
                     isImage: true,
-                    content: <i className='fas fa-check' onClick={(e)=>this.submitValue(e, type, oldTodo)}/>
+                    content: 
+                    <Button 
+                        type="success-img"
+                        disabled={false}
+                        onClick={(e: React.SyntheticEvent<Element, Event>)=>this.submitValue(e, type, oldTodo)}
+                    >
+                        <i className={`fas fa-check`}/>
+                    </Button>
                 };
                 
                 break;
@@ -164,7 +171,14 @@ export default class TodoList extends React.Component<{TodoStore: TodoStore, Mod
                 content = <input id={classes.popupContentInputId} placeholder='что вы хотите сделать?' type="text"/>;
                 footer = {
                     isImage: true,
-                    content: <i className='fas fa-check' onClick={(e)=>this.submitValue(e, type)}/>
+                    content: 
+                    <Button
+                        type="success-img"
+                        disabled={false}
+                        onClick={(e: React.SyntheticEvent<Element, Event>)=>this.submitValue(e, type)}
+                    >
+                        <i className={`fas fa-check`} />
+                    </Button>
                 }
                 break;
             }
