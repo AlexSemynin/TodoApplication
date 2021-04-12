@@ -11,7 +11,7 @@ export default class AutoStore implements IAutoStore {
         this.isLogin = !!this._user;
     }
 
-    private _autoLogoutMCec = 1000*60*20 //20 minuties  
+    private _autoLogoutMCec = 1000*60*0.5 //20 minuties  
 
     private _mainStore: IMainStore;
 
@@ -87,6 +87,7 @@ export default class AutoStore implements IAutoStore {
         this.isLogin = false;
         this._user = null;
         this._mainStore.TodoStore.ClearStore();
+        this._mainStore.LocationInfo.push("/");
         // Redirect to homePage
     }
 
