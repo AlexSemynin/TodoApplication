@@ -27,11 +27,11 @@ const SunSvg = (props: Iprops) =>{
             </radialGradient>
         </defs>
         <g id="Time">
-            <text id="Evning" transform="translate(122.14 691.19)" fontSize="42"className="abstraction-white-color"  fontFamily="MyriadPro-Regular, Myriad Pro">{props.sunRiseTime}</text>
-            <text id="Morning" transform="translate(1373.13 691.19)" fontSize="42" className="abstraction-white-color"  fontFamily="MyriadPro-Regular, Myriad Pro">{props.sunSetTime}</text>
+            <text id="Evning" transform="translate(122.14 691.19)" fontSize="60"className="abstraction-black-color"  fontFamily="MyriadPro-Regular, Myriad Pro">{props.sunRiseTime}</text>
+            <text id="Morning" transform="translate(1373.13 691.19)" fontSize="60" className="abstraction-black-color"  fontFamily="MyriadPro-Regular, Myriad Pro">{props.sunSetTime}</text>
         </g>
         <g id="trajector" offset="0.1">
-            <path id="_trajector_" d="M309.83,708S432.26,383.92,936.19,383.92,1582.13,708,1582.13,708" transform="translate(-153.77 -116.98)" opacity="0.1" stroke="#1d1d1b" strokeMiterlimit="10" strokeWidth="0.75"/>
+            <path id="_trajector_" d="M309.83,708S432.26,383.92,936.19,383.92,1582.13,708,1582.13,708" transform="translate(-153.77 -116.98)" opacity="0" stroke="#1d1d1b" strokeMiterlimit="10" strokeWidth="0.75"/>
         </g>
         <g id="SunRise">
             <path d="M349.21,722.48H271.08c-3.22,0-3.22,5,0,5h78.13c3.21,0,3.22-5,0-5Z" transform="translate(-153.77 -116.98)" className="abstraction-white-color" />
@@ -50,8 +50,8 @@ const SunSvg = (props: Iprops) =>{
         </g>
         <g id="FullSun" opacity="0.9">
             <circle id="_Sun_gradient_" className="SunPosition" cx={cx} cy={cy} r="266.94"  fill="url(#grad1)"/>
-            <g id="_Sun_round_" data-name="&lt;Sun_round&gt;">
-            <circle className="SunPosition" cx={cx} cy={cy} r="62.79" />
+            <g id="_Sun_round_" data-name="&lt;Sun_round&gt;" fill="white" stroke="white" opacity="0.1">
+            <circle className="SunPosition" cx={cx} cy={cy} color={props.sunColor} r="62.79" />
             </g>
 
         </g>
