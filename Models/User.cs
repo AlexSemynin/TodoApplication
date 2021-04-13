@@ -22,6 +22,7 @@ namespace Models
         public List<Todo> Todos { get; set; }
 
         public DateTime? RegisterDate { get; set; }
+        public bool IsAdmin { get => false; private set { } }
 
     }
 }
