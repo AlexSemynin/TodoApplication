@@ -42,7 +42,7 @@ namespace WebApp.Controllers
                 return BadRequest("only admin can create");
             }
 
-            var slovo = _dataManager.Slovechkos.CreateSlovo(req.Content, req.Author);
+            var slovo = await _dataManager.Slovechkos.CreateSlovo(req.Content, req.Author);
 
             return Ok(slovo);
         }
