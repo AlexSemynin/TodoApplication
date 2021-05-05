@@ -187,6 +187,14 @@
     <Compile Include="Migrations\20210413191101_AddUserPropertyIsAdmin2.designer.cs">
       <DependentUpon>20210413191101_AddUserPropertyIsAdmin2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20210413214621_addSloveckoTable2.cs" />
+    <Compile Include="Migrations\20210413214621_addSloveckoTable2.designer.cs">
+      <DependentUpon>20210413214621_addSloveckoTable2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20210503112208_changeIntToStr.cs" />
+    <Compile Include="Migrations\20210503112208_changeIntToStr.designer.cs">
+      <DependentUpon>20210503112208_changeIntToStr.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\RepositoryTodoContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryTodoContext.cs" />

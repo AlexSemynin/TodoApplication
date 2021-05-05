@@ -117,8 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataManager.cs" />
+    <Compile Include="Implements\EFSlovechkoRepository.cs" />
     <Compile Include="Implements\EFTodosRepository.cs" />
     <Compile Include="Implements\EFUsersRepository.cs" />
+    <Compile Include="Interfaces\ISlovechkosRepo.cs" />
     <Compile Include="Interfaces\ITodosRepo.cs" />
     <Compile Include="Interfaces\IUsersRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -51,6 +51,7 @@ namespace WebApp
 
             services.AddTransient<IUsersRepo, EFUsersRepository>();
             services.AddTransient<ITodosRepo, EFTodosRepository>();
+            services.AddTransient<ISlovechkosRepo, EFSlovechkoRepository>();
 
             services.AddScoped<DataManager>();
 

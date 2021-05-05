@@ -11,13 +11,16 @@ namespace BusinessLayer
     {
         IUsersRepo _userRepo;
         ITodosRepo _todosRepo;
-        public DataManager(IUsersRepo usersRepo, ITodosRepo todosRepo)
+        ISlovechkosRepo _slovechkosRepo;
+        public DataManager(IUsersRepo usersRepo, ITodosRepo todosRepo, ISlovechkosRepo slovechkos)
         {
             _userRepo = usersRepo;
             _todosRepo = todosRepo;
+            _slovechkosRepo = slovechkos;
         }
 
         public IUsersRepo Users => _userRepo;
         public ITodosRepo Todos => _todosRepo;
+        public ISlovechkosRepo Slovechkos => _slovechkosRepo;
     }
 }
