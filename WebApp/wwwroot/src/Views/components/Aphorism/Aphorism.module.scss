@@ -16,11 +16,15 @@
     .Author{
         grid-area: author;
     }
-    button:first-of-type{
-        grid-area: reload;
-    }
-    button:nth-of-type(2){
-        grid-area: addI;
+    button{
+        height: auto;
+        width: auto;
+        &:first-of-type{
+            grid-area: reload;
+        }
+        &:nth-of-type(2){
+            grid-area: addI;
+        }
     }
 
     .Icons{
