@@ -9,9 +9,9 @@ namespace Models
     public class Slovechko
     {
         public string Id { get; set; }
-        public string Slovo { get; set; }
+        public string Content { get; set; }
 
-        public string Autor { get; set; }
+        public string Author { get; set; }
         
     }
 }

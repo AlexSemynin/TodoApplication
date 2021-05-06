@@ -29,9 +29,10 @@ namespace BusinessLayer.Implements
         {
             var guid = Guid.NewGuid().ToString().Replace("-", "_");
             var slovo = new Slovechko() { Id =  $"slovechko_{guid}"};
-            slovo.Autor = autor;
-            slovo.Slovo = content;
+            slovo.Author = autor;
+            slovo.Content = content;
             await _contex.Slovechkos.AddAsync(slovo);
+            await _contex.SaveChangesAsync();
 
             return slovo;
         }
