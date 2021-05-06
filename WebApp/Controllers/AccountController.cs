@@ -53,7 +53,9 @@ namespace WebApp.Controllers
             {
                 access_token = encodedJwt,
                 email = _user.Email,
-                userId = identity.Name
+                userId = identity.Name,
+                isAdmin = identity.Name == "1", //todo: переделать под роли(пока проверяется по id админa)
+                name = _user.Name
             };
 
             return Ok(response);
