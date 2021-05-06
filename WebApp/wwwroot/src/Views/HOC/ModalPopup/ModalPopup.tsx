@@ -80,11 +80,11 @@ const modalPopup = (props: React.PropsWithChildren<IModalProps>) => {
 
     const cls = [
         classes.Modal,
-        classes.isActive,
+        // classes.isActive,
     ];
-    // if(props.isOpen){
-    //     cls.push(classes.isActive);
-    // }
+    if(props.isOpen){
+        cls.push(classes.isActive);
+    }
 
     return(
        <React.Fragment>
