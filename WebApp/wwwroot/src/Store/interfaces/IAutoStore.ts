@@ -1,8 +1,10 @@
 export type User = {
+    userId: string;
     email: string;
-    password: string;
     access_token: string;
-    name?: string;
+    isAdmin: boolean;
+    name: string;
+    password?: string;
 } | null;
 
 export default interface IAutoStore{
