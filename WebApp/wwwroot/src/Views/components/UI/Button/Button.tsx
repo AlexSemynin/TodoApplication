@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Button.module.scss';
 
 
-export type ButtonType = "error" | "success" | "primary" | "success-img";
+export type ButtonType = "error" | "success" | "primary" | "success-img" | "non-style";
 
 export interface ButtonProps{
     type: ButtonType;
