@@ -1,0 +1,71 @@
+.Aphorism{
+    height: 100%;
+    padding: 1px;
+    display: grid;
+    grid-template-areas: 
+        "reload contentA contentA contentA"
+        "addI . . author"
+    ;
+    align-items: center;
+    grid-template-columns: auto repeat(3, 1fr);
+    column-gap: 5rem;
+
+    .Content{
+       grid-area: contentA; 
+    }
+    .Author{
+        grid-area: author;
+    }
+    button:first-of-type{
+        grid-area: reload;
+    }
+    button:nth-of-type(2){
+        grid-area: addI;
+    }
+
+    .Icons{
+        font-size: 5em;
+        color: #ffffff80;
+        border-radius: 50%;
+        box-shadow: 2px 2px 2px #00000078;
+    
+        &.reload{
+            box-shadow: none;
+            transition: transform 0.3s ease-out;
+            &:hover{
+                transform: rotate(60deg);
+            }
+            &.isActive{
+                animation: loop 0.5s linear infinite;
+                @keyframes loop {
+                    from{
+                        transform: rotate(0);
+                    }
+                    to{
+                        transform: rotate(360deg);
+                    }
+                        
+                }
+            }
+        }
+        &.add{
+            grid-area: addI;
+            transition: all 0.3 ease-in;
+            &:hover, &:active{
+                transform: scale(0.9);
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .Aphorism{
+        grid-template-areas: 
+            "reload contentA contentA"
+            "addI .author"
+        ;
+        grid-template-columns: auto auto;
+        column-gap: 10px;
+    }
+}

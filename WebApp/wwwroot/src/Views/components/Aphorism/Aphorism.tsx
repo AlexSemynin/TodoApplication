@@ -7,6 +7,7 @@ import ModalStore from '../../../Store/ModalStore';
 import Button from '../UI/Button/Button';
 import Loader from '../UI/Loader/Loader';
 import Input from '../UI/Input/Input';
+import classes from './Aphorism.module.scss';
 
 // type formAphorism = {canSend: boolean, aphorism: Aphorism}
 
@@ -18,10 +19,12 @@ const Aphorism = inject("AutoStore", "AphorismStore", "ModalStore")(observer(
         const modalStore = props.ModalStore!;
 
         //const [aphorism, changeAphorism] = useState<Aphorism|null>(aphorismStore.GetRandomAphorism);
-        const [formAphorism, changeAphorism] = useState<Aphorism>({content: "", author: ""});
         const [canSubmit, changeCanSubmit] = useState(false);
         const contentInput = useRef<HTMLInputElement>(null);
         const authorInput = useRef<HTMLInputElement>(null);
+        const initBtnCls = [classes.Icons, classes.reload, "fas fa-sync-alt"];
+        const [reloadBtnCls, changeReloadBtnCls] = useState(initBtnCls.join(" "));
+        
 
         const cleanInputs = () =>{
             if(authorInput.current && contentInput.current){
@@ -32,16 +35,28 @@ const Aphorism = inject("AutoStore", "AphorismStore", "ModalStore")(observer(
         }
 
 
-        return(<>
-            <h2>{aphorismStore.GetRandomAphorism?.content}</h2>
-            <h3>{aphorismStore.GetRandomAphorism?.author}</h3>
-            <Loader isActive={aphorismStore.isLoading}/>
-            <Button 
+        return(
+        <div className={classes.Aphorism}>
+            <h2 className={classes.Content}>{aphorismStore.GetRandomAphorism?.content}</h2>
+            <h3 className={classes.Author}>{aphorismStore.GetRandomAphorism?.author}</h3>
+            {/* <div style={{position: 'absolute', width: "100%", height: '100%', top:0, right:0,zIndex:-1}}>
+                <Loader isActive={aphorismStore.isLoading}/>
+            </div> */}
+            <Button
                 type="non-style"
                 disabled={false}
-                onClick={() => aphorismStore.LoadRandomAphorism()}
+                onClick={async () => {
+                    initBtnCls.push(classes.isActive);
+                    changeReloadBtnCls(initBtnCls.join(" "));
+                    await aphorismStore.LoadRandomAphorism();
+                    const timer = window.setTimeout(()=>{
+                        initBtnCls.pop();
+                        changeReloadBtnCls(initBtnCls.join(" "));
+                        window.clearTimeout(timer);
+                    }, 300);
+                }}
             >
-                <i className={`fas fa-sync-alt`}/>
+                <i className={reloadBtnCls}/>
             </Button>
             {
                 autoStore.getUser?.isAdmin ?
@@ -51,7 +66,7 @@ const Aphorism = inject("AutoStore", "AphorismStore", "ModalStore")(observer(
                         disabled={false}
                         onClick={()=>{ modalStore.IsActive=true; }}
                     >
-                        <i className={`fas fa-plus-circle`}/>
+                        <i className={`${classes.Icons} ${classes.add} fas fa-plus-circle`}/>
                     </Button>
 
                     <ModalPopup
@@ -109,7 +124,7 @@ const Aphorism = inject("AutoStore", "AphorismStore", "ModalStore")(observer(
                 :
                 <></>
             }
-        </>)
+        </div>)
     }
 ));
 

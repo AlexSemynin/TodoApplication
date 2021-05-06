@@ -44,3 +44,10 @@ $error-color: rgba(240, 87, 108, 1);
     padding: 0;
     background-color: $success-color;
 }
+.non-style{
+    background-color: rgba(255,255,255,0);
+    border: 1px solid #0000;
+    &:active{
+        box-shadow:none;
+    }
+}
