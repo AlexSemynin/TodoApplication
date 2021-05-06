@@ -5,6 +5,7 @@ import AutoStore from "./AutoStore";
 import IMainStore from "./interfaces/IMainStore";
 import { History } from 'history/index';
 import {createBrowserHistory} from 'history';
+import AphorismStore from "./AphorismStore";
 
 
 export default class MainStore implements IMainStore{
@@ -13,12 +14,14 @@ export default class MainStore implements IMainStore{
     public readonly LayoutStore: LayoutStore;
     public readonly TodoStore: TodoStore;
     public readonly LocationInfo: History;
+    public readonly AphorismStore: AphorismStore
 
     constructor() {
         this.ModalStore = new ModalStore(this);
         this.LayoutStore = new LayoutStore(this);
         this.TodoStore = new TodoStore(this);
         this.AutoStore = new AutoStore(this);
+        this.AphorismStore = new AphorismStore(this);
         this.LocationInfo = createBrowserHistory();
     }
 }

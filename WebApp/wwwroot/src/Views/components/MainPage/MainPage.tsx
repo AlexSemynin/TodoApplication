@@ -1,6 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import React, { useContext, useState } from 'react';
 import AutoStore from '../../../Store/AutoStore';
+import Aphorism from '../Aphorism/Aphorism';
 import classes from './MainPage.module.scss';
 
 
@@ -64,8 +65,7 @@ const MainPage = inject("AutoStore")(observer((props: React.PropsWithChildren<{A
 
     return(
         <div className={classes.MainPage}>
-            <h2>Все не наше, а чужое...</h2>
-            <h1>Только время наша собственность</h1>
+            <Aphorism/>
         </div>
     )
 }));
