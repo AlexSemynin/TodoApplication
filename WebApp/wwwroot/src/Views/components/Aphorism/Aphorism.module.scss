@@ -16,7 +16,7 @@
     .Author{
         grid-area: author;
     }
-    button{
+    & > button{
         height: auto;
         width: auto;
         &:first-of-type{
