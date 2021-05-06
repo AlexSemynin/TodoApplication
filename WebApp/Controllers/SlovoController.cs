@@ -26,7 +26,6 @@ namespace WebApp.Controllers
 
         // GET: api/<SlovoController>
         [HttpGet]
-        [Authorize]
         public ActionResult<Slovechko> Get()
         {
             var slovo = _dataManager.Slovechkos.GetRandomSlovechko();
