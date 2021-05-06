@@ -27,7 +27,7 @@ const isInvalid = (valid:boolean|undefined, toched:boolean|undefined, shouldVali
     return !valid && toched && shouldValidate;
 }
 
-const Input = (props: React.PropsWithChildren<IInputProps>) => {
+const Input = React.forwardRef((props: React.PropsWithChildren<IInputProps>, ref?:React.Ref<HTMLInputElement>) => {
 
     const inputType = props.inputType ?? "text";
     const cls = [
@@ -42,13 +42,14 @@ const Input = (props: React.PropsWithChildren<IInputProps>) => {
     return(
         <div className={cls.join(' ')}>
             <label htmlFor={htmlFor}>{props.label  }</label>
-            <input
-                id={htmlFor}
-                type={inputType}
-                onChange={props.onChange}
-                value={props.value}
-                name={props.inputName}
-            />
+                <input
+                    id={htmlFor}
+                    type={inputType}
+                    onChange={props.onChange}
+                    value={props.value}
+                    name={props.inputName}
+                    ref={ref}
+                />
             {
                 isInvalid(props.valid, props.toched, props.shouldValidate) ? 
                     <span>{props.invalidText || "Введите верное значение"}</span>
@@ -56,6 +57,6 @@ const Input = (props: React.PropsWithChildren<IInputProps>) => {
             }
         </div>
     )
-}
+});
 
 export default Input;
