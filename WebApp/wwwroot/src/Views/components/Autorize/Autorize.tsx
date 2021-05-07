@@ -208,11 +208,15 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
                 {props.AutoStore?.isLogin ?
                 <React.Fragment>
                     <span>Hi, {props.AutoStore.getUser?.name ?? props.AutoStore.getUser?.email}</span>
-                    <Button type="primary" disabled={false} onClick={()=>{props.AutoStore?.logout(); props.LocationInfo?.push("/")}}>logout</Button>
+                    <div className={classes.BtnLogoutWrapper}>
+                        <Button type="primary" disabled={false} onClick={()=>{props.AutoStore?.logout(); props.LocationInfo?.push("/")}}>logout</Button>
+                    </div>
                 </React.Fragment> :
                 <React.Fragment>
-                    <Button disabled={false} type="success" onClick={() => openPopup(false)}>login</Button>
-                    <Button disabled={false} type="success" onClick={() => openPopup(true)}>register</Button>
+                    <div className={classes.BtnLogoutWrapper}>
+                        <Button disabled={false} type="success" onClick={() => openPopup(false)}>login</Button>
+                        <Button disabled={false} type="success" onClick={() => openPopup(true)}>register</Button>
+                    </div>
                 </React.Fragment>
                 }
             </div>
