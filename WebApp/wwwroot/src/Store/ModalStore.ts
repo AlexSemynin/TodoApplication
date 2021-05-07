@@ -1,5 +1,6 @@
 ﻿import { action, makeObservable, observable } from "mobx";
 import IMainStore from "./interfaces/IMainStore";
+import MainStore from "./MainStore";
 
 
 export type modalType = "ADD" | "AUTORIZE" | undefined;
@@ -7,7 +8,7 @@ export type modalType = "ADD" | "AUTORIZE" | undefined;
 export default class ModalStore{
     // Для простоты сделаем так, что в приложении может быть открыто только одно попап
     private _mainStore;
-    constructor(mainStore: IMainStore) {
+    constructor(mainStore: MainStore) {
         this._mainStore = mainStore;
         makeObservable(this);
     }

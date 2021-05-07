@@ -1,5 +1,5 @@
 import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
-import IMainStore from "./interfaces/IMainStore";
+import MainStore from './MainStore';
 
 
 export interface Aphorism{
@@ -9,9 +9,9 @@ export interface Aphorism{
 }
 
 export default class AphorismStore{
-    private _mainStore: IMainStore;
+    private _mainStore: MainStore;
 
-    constructor(mainStore: IMainStore){
+    constructor(mainStore: MainStore){
         makeAutoObservable(this);
         this._mainStore = mainStore;
         this._currentAphorism = null;
@@ -59,7 +59,7 @@ export default class AphorismStore{
             body: JSON.stringify(aphorism)
         });
         if(!resp.ok){
-            throw new Error("Ошибка при создании афоризма:")
+            throw new Error("Ошибка при создании афоризма:");
         }
 
         this._currentAphorism = <Aphorism> await resp.json();

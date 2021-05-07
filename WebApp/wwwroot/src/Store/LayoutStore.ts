@@ -1,5 +1,6 @@
 ﻿import { action, computed, makeObservable, observable } from "mobx";
 import IMainStore from "./interfaces/IMainStore";
+import MainStore from "./MainStore";
 
 export type ITheme = "Dark" | "Light";
 const grad = {
@@ -11,7 +12,7 @@ const grad = {
 export default class LayoutStore{
     //todo добавить язык
     private _mainStore;
-    constructor(mainStore: IMainStore) {
+    constructor(mainStore: MainStore) {
         makeObservable(this);
         this._mainStore = mainStore;
         this.Theme = <ITheme>sessionStorage.getItem('theme') ?? "Light";
