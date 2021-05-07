@@ -10,6 +10,7 @@ import AutoStore from 'Store/AutoStore';
 import Autorize from '../../components/Autorize/Autorize';
 import { History } from 'history/index';
 import SunMovingReference from '../../svgs/SunMovingReference';
+import ErrorWrapper from '../../components/UI/Error/ErrorWrapper';
 
 
 export type linkForRouter = string;
@@ -82,6 +83,7 @@ const mainLayout = inject("LayoutStore", "AutoStore", "LocationInfo")
 
     return (
         <React.Fragment>
+            <ErrorWrapper />
             <div className={classes.MainLayout}>
                 <header>
                     <div className={classes.logo}>
