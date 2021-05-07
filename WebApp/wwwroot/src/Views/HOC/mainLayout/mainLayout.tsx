@@ -52,6 +52,7 @@ const mainLayout = inject("LayoutStore", "AutoStore", "LocationInfo")
                 <li key={`navItemNumber_${i}`}>
                     <NavLink
                         to={link.to}
+                        onClick={()=>{toggleOpen(false)}}
                     >
                         { link.label }
                     </NavLink>
