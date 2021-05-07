@@ -1,9 +1,10 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import IMainStore from './interfaces/IMainStore';
 import IAutoStore, {User} from './interfaces/IAutoStore';
+import MainStore from "./MainStore";
 
 export default class AutoStore implements IAutoStore {
-    constructor(mainStore: IMainStore){
+    constructor(mainStore: MainStore){
         makeObservable(this);
         this._mainStore = mainStore;
         // const user = localStorage.getItem("user");
@@ -13,7 +14,7 @@ export default class AutoStore implements IAutoStore {
 
     private _autoLogoutMCec = 1000*60*20 //20 minuties  
 
-    private _mainStore: IMainStore;
+    private _mainStore: MainStore;
 
     @observable
     private _user: string | null;
@@ -29,6 +30,15 @@ export default class AutoStore implements IAutoStore {
 
     @action
     async login(email: string, password: string){
+        // const body = JSON.stringify({
+        //     email, 
+        //     password
+        // })
+        // const user = JSON.stringify(await this._mainStore.BaseSerice.Post<User>("account/token", {body}));
+        // this._user = user;
+        // localStorage.setItem("user", this._user);
+        // this.isLogin = true;
+        // this.autoLogout(this._autoLogoutMCec);
         try{
             let response = await fetch('api/account/token', {
                 method: "POST",
