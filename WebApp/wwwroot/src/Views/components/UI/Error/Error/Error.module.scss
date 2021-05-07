@@ -1,0 +1,21 @@
+$errorColor: rgba(236, 8, 8, 0.45);
+$errBtnColor: rgba(68, 0, 0, 0.8);
+.ErrorComp{
+    display: flex;
+    align-items: baseline;
+        
+    i{
+        color: $errBtnColor;
+        font-size: 1.5rem;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    span{
+        background-color: $errorColor;
+        padding: 10px;
+        border-radius: 15px;
+        margin-left: 5px;
+    }
+    
+}
