@@ -1,6 +1,8 @@
 ﻿import { action, computed, makeObservable, observable } from "mobx";
 import { NetworkInterfaceInfoIPv4 } from "node:os";
+import CustomError from "../Servises/CustomError";
 import IMainStore from "./interfaces/IMainStore";
+import MainStore from "./MainStore";
 
 
 export interface ITodo {
@@ -20,9 +22,9 @@ export enum changeTodoType{
 
 export default class TodoStore{
 
-    private _mainStore: IMainStore;
+    private _mainStore: MainStore;
 
-    constructor(mainStore: IMainStore) {
+    constructor(mainStore: MainStore) {
         makeObservable(this);
         this._mainStore = mainStore;
     }
@@ -33,19 +35,11 @@ export default class TodoStore{
     @action
     async LoadTodos() : Promise<void|never> {
         const token = this._mainStore.AutoStore.getUser?.access_token;
-        const response = await fetch("/api/todos",{
-            method: "GET",
-            headers:{
-                "Accept": "application/json",
-                "Authorization": "Bearer " + token  // передача токена в заголовке
-            }
-        });
-        if (!response.ok) {
-            const message = JSON.parse(await response.text()).errorText;
-            throw new Error(`Ответ сервера: ${message}`);
-        }else{
-            const todos = <Array<ITodo>> await response.json();
+        if(token){
+            const todos = <Array<ITodo>> await this._mainStore.BaseSerice.GetAutho("/todos", token);
             this._todos = todos.length ? todos.reverse() : null;
+        }else{
+            new CustomError("user not founded in localStorage :(", true);
         }
     }
 
@@ -64,21 +58,14 @@ export default class TodoStore{
        const token = this._mainStore.AutoStore.getUser?.access_token;
        const headers = new Headers();
        headers.append("Content-Type", "application/json");
-       headers.append("Authorization", "Bearer " + token)
-       const response = await fetch("api/todos", {
-           method: "POST",
-           headers,
-           body: JSON.stringify({
-               text: todo.text,
-               isComplited: todo.isComplited ?? false
-           })
-       });
-       if(!response.ok){
-            const message = JSON.parse(await response.text()).errorText;
-            throw new Error(`Ответ сервера: ${message}`);
-       }
-       const newTodo : ITodo = await response.json();
-       this._todos?.push(newTodo);
+       headers.append("Authorization", "Bearer " + token);
+       const body = JSON.stringify({
+        text: todo.text,
+        isComplited: todo.isComplited ?? false
+    })
+
+       await this._mainStore.BaseSerice.PostAutho<ITodo>("/todos", {headers, body});
+       await this.LoadTodos();
        return true;
     }
 
