@@ -18,6 +18,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,8 +39,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\build_frontend.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="wwwroot\src\custom.d.tsx" />
     <TypeScriptCompile Include="wwwroot\src\index.tsx" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PreBuildEvent>PowerShell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)WebApp\wwwroot\build_frontend.ps1 $(SolutionDir)</PreBuildEvent>
+    <!--<PreBuildEvent>--><!--PowerShell npm run build-dev--><!--</PreBuildEvent>-->
+  </PropertyGroup>
+  
 </Project>

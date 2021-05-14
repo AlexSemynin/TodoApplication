@@ -43,6 +43,7 @@
   "scripts": {
     "update-install": "npm install",
     "build-dev": "webpack --mode development",
+    "build": "npm install && npm run build-dev",
     "build-dev-watch": "webpack --watch --mode development",
     "node-modules-clean": "rimraf node_modules/*",
     "start:dev": "webpack-dev-server"
