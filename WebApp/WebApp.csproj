@@ -47,9 +47,9 @@
     <TypeScriptCompile Include="wwwroot\src\index.tsx" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <PreBuildEvent>PowerShell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)WebApp\wwwroot\build_frontend.ps1 $(SolutionDir)</PreBuildEvent>
+  <!--<PropertyGroup>-->
+    <!--<PreBuildEvent>PowerShell -ExecutionPolicy RemoteSigned -file $(SolutionDir)WebApp\wwwroot\build_frontend.ps1 $(SolutionDir)</PreBuildEvent>-->
     <!--<PreBuildEvent>--><!--PowerShell npm run build-dev--><!--</PreBuildEvent>-->
-  </PropertyGroup>
+  <!--</PropertyGroup>-->
   
 </Project>
