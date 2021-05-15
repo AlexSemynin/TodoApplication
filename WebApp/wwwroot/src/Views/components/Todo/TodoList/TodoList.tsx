@@ -51,12 +51,11 @@ export default class TodoList extends React.Component<{TodoStore: TodoStore, Mod
     constructor(props: {TodoStore: TodoStore, ModalStore: ModalStore, AutoStore: AutoStore}){
         super(props);
         this.state = this.initialState;
+        this.todoStore.LoadTodos();
     }
 
     async componentDidMount() {
         console.log(`тудухи загружены - ${!!this.todoStore.Todos}`);
-        const todos = this.todoStore.Todos ?? await this.todoStore.LoadTodos();
-        console.log(todos);
     }
 
     todoItemChange(todo: ITodo, changeType: changeTodoType){

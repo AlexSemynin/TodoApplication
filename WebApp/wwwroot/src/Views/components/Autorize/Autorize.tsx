@@ -177,7 +177,6 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
                                     );
                                     changeStateFormLoader(false);
                                     changeState({isOpen: false, autoPopupType: null});
-                                    props.LocationInfo?.push("/todos");
                                 }}
                                 disabled={!isFormVaild}
                             >
