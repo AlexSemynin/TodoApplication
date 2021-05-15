@@ -55,29 +55,29 @@ export default class TodoStore{
 
     @action
     async AddTodo(todo: ITodo): Promise<boolean | never> {
-       const token = this._mainStore.AutoStore.getUser?.access_token;
-       const headers = new Headers();
-       headers.append("Content-Type", "application/json");
-       headers.append("Authorization", "Bearer " + token);
-       const body = JSON.stringify({
-        text: todo.text,
-        isComplited: todo.isComplited ?? false
-    })
+        const token = this._mainStore.AutoStore.getUser?.access_token;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", "Bearer " + token);
+        const body = JSON.stringify({
+            text: todo.text,
+            isComplited: todo.isComplited ?? false
+        });
 
-       await this._mainStore.BaseSerice.PostAutho<ITodo>("/todos", {headers, body});
-       await this.LoadTodos();
-       return true;
+        await this._mainStore.BaseSerice.PostAutho<ITodo>("/todos", {headers, body});
+        await this.LoadTodos();
+        return true;
     }
 
     @action
     async UpdateTodo(todo: ITodo) {
         const token = this._mainStore.AutoStore.getUser?.access_token;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", "Bearer " + token);
         const response = await fetch("api/todos", {
             method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            },
+            headers,
             body: JSON.stringify(todo)
         });
         if(!response.ok){
@@ -98,20 +98,18 @@ export default class TodoStore{
     @action
     async RemoveTodo(id?: string) {
         const token = this._mainStore.AutoStore.getUser?.access_token;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", "Bearer " + token);
         const response = await fetch(`api/todos/${id}`, {
             method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            }
+            headers,
         });
         if(!response.ok){
            const message = JSON.parse(await response.text()).errorText;
            throw new Error(`Ответ сервера: ${message}`);
        }
-    //    const res = await response.json();
        this._todos = this._todos?.filter(todo => todo.id !== id)??null;
-    //    console.log(res);
     }
 
 }
