@@ -107,9 +107,16 @@ namespace WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(
+                //    "default",
+                //    "{controller}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    "default",
-                    "{controller}/{action=Index}/{id?}");
+                    name: "ApiMethodRequest",
+                    pattern: "api/{controller}/{id}");
+                endpoints.MapControllerRoute(
+                    name: "DefaultApi",
+                    pattern: "api/{controller}/{action}/{id}");
+
             });
 
             app.UseSpa(spa => { spa.Options.SourcePath = _clientAppLocation; });

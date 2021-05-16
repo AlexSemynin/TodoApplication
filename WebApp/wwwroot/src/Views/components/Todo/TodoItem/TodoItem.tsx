@@ -37,8 +37,6 @@ export default class TodoItem extends React.Component<propsTodo, IState>{
         const clsTextDeco = [classes.text];
         todo.isComplited ? clsTextDeco.push(classes.deco) : undefined;
 
-        console.log(`render Li-id-${todo.id} isChecked=${todo.isComplited}`);
-
         return(
             <li className={classes.Item}>
                 {/* <div className={classes['todo-wrapper']}> */}

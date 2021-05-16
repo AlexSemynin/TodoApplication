@@ -27,11 +27,11 @@ export default class TodoStore{
     constructor(mainStore: MainStore) {
         makeObservable(this);
         this._mainStore = mainStore;
-        this._todos = [];
+        this._todos = null;
     }
 
     @observable
-    private _todos: Array<ITodo>;
+    private _todos: Array<ITodo> | null;
 
     @action
     async LoadTodos() : Promise<Array<ITodo>|never> {
@@ -52,7 +52,7 @@ export default class TodoStore{
 
     @action
     ClearStore(){
-        this._todos = [];
+        this._todos = null;
     }
 
     @action
@@ -73,45 +73,58 @@ export default class TodoStore{
 
     @action
     async UpdateTodo(todo: ITodo) {
-        const token = this._mainStore.AutoStore.getUser?.access_token;
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", "Bearer " + token);
-        const response = await fetch("api/todos", {
-            method: "PUT",
-            headers,
-            body: JSON.stringify(todo)
-        });
-        if(!response.ok){
-            const message = JSON.parse(await response.text()).errorText;
-            throw new Error(`Ответ сервера: ${message}`);
-        }
-        const res = <ITodo>await response.json();
-        this._todos = this._todos?.map(t => {
-            if(t.id == todo.id){
-                return res;    
+        try{
+            const token = this._mainStore.AutoStore.getUser?.access_token;
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Authorization", "Bearer " + token);
+            const response = await fetch(`/api/todos/change`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({
+                    id: todo.id,
+                    text: todo.text,
+                    isComplited: todo.isComplited
+                }), //todo - observable object !== Model.Todo
+            });
+            if(!response.ok){
+                const message = JSON.parse(await response.text()).errorText;
+                throw new Error(`Ответ сервера: ${message}`);
             }
-            return t;
-        })??null;
+            const res = <ITodo>await response.json();
+            this._todos = this._todos?.map(t => {
+                if(t.id == todo.id){
+                    return res;    
+                }
+                return t;
+            })??null;
+        }catch(e){
+            throw new CustomError(`Ошибка при изменении: ${e.message}`, true);
+        }
        
        
     }
 
     @action
     async RemoveTodo(id?: string) {
-        const token = this._mainStore.AutoStore.getUser?.access_token;
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", "Bearer " + token);
-        const response = await fetch(`api/todos/${id}`, {
-            method: "DELETE",
-            headers,
-        });
-        if(!response.ok){
-           const message = JSON.parse(await response.text()).errorText;
-           throw new Error(`Ответ сервера: ${message}`);
-       }
-       this._todos = this._todos?.filter(todo => todo.id !== id)??null;
+        try{
+            const token = this._mainStore.AutoStore.getUser?.access_token;
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Authorization", "Bearer " + token);
+            const response = await fetch(`/api/todos/del`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify(id),
+            });
+            if(!response.ok){
+                const message = JSON.parse(await response.text()).errorText;
+                throw new Error(`Ответ сервера: ${message}`);
+            }
+            this._todos = this._todos?.filter(todo => todo.id !== id)??null;
+        }catch(e){
+            throw new CustomError(`ошибка при удалении: ${e.message}`, true);
+        }
     }
 
 }
