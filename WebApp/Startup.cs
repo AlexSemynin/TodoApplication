@@ -107,9 +107,6 @@ namespace WebApp
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(
-                //    "default",
-                //    "{controller}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "ApiMethodRequest",
                     pattern: "api/{controller}/{id}");
