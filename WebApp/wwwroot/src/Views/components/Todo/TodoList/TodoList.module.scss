@@ -57,11 +57,14 @@
     }
 }
 @media screen and (max-width: 767px) {
-    .AddTodo{
-        right: 10px;
-        color:rgba(0, 0, 0, 0.35);
-    }
-    .TodoList{
-        padding: 10px 60px 10px 50px;
+    main{
+        display: flex;
+        flex-direction: column;
+        .AddTodo{
+            position: static;
+            margin-top: 20px;
+            align-self: center;
+            transform: translateY(-10px);
+        }
     }
 }
