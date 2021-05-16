@@ -38,7 +38,7 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
             value: '',
             type: "password",
             label: 'Пароль',
-            errorMessage: 'Введите корректный пароль',
+            errorMessage: 'пароль не менее 6 символов',
             valid: false,
             toched: false,
             validation: {
@@ -177,6 +177,7 @@ const Autorize = inject("AutoStore","LocationInfo")( observer((props: React.Prop
                                     );
                                     changeStateFormLoader(false);
                                     changeState({isOpen: false, autoPopupType: null});
+                                    props.LocationInfo?.push("/todos");
                                 }}
                                 disabled={!isFormVaild}
                             >

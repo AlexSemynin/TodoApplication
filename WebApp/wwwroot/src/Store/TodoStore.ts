@@ -27,19 +27,21 @@ export default class TodoStore{
     constructor(mainStore: MainStore) {
         makeObservable(this);
         this._mainStore = mainStore;
+        this._todos = [];
     }
 
     @observable
-    private _todos: Array<ITodo> | null = null;
+    private _todos: Array<ITodo>;
 
     @action
-    async LoadTodos() : Promise<void|never> {
+    async LoadTodos() : Promise<Array<ITodo>|never> {
         const token = this._mainStore.AutoStore.getUser?.access_token;
         if(token){
             const todos = <Array<ITodo>> await this._mainStore.BaseSerice.GetAutho("/todos", token);
-            this._todos = todos.length ? todos.reverse() : null;
+            this._todos = todos.length ? todos.reverse() : [];
+            return this._todos;
         }else{
-            new CustomError("user not founded in localStorage :(", true);
+            throw new CustomError("user not founded in localStorage :(", true);
         }
     }
 
@@ -50,7 +52,7 @@ export default class TodoStore{
 
     @action
     ClearStore(){
-        this._todos = null;
+        this._todos = [];
     }
 
     @action
