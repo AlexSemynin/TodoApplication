@@ -1,7 +1,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[[product-screenshot]](https://todotestapp.xyz)
+[product-screenshot](https://todotestapp.xyz)
 
 Adaptive todo application with authorization. Where you can control the time by sun cycle, so that everything is in time)
 Here you can find interesting statement, sunrise and sunset time in you region
