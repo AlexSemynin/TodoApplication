@@ -5,11 +5,12 @@ import { BrowserRouter } from "react-router-dom";
 // import CounterF from "../components/counter/counterF";
 import MainLayout from '../HOC/mainLayout/mainLayout';
 import Todo from '../components/Todo/TodoList/TodoList';
-import { inject } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import AuthStore from "../../Store/AutoStore";
 import MainPage from "../../Views/components/MainPage/MainPage";
 
 @inject("AutoStore")
+@observer
 export default class App extends React.Component<{AutoStore?: AuthStore}> {
 
     private get authStore(): AuthStore{
