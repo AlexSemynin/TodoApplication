@@ -2,6 +2,7 @@
 import classes from './TodoItem.module.scss';
 import TodoStore, {ITodo, changeTodoType} from '../../../../Store/TodoStore';
 import { inject, observer } from 'mobx-react';
+import CustomError from '../../../../Servises/CustomError';
 
 interface IState {
     isChecked: boolean
@@ -48,7 +49,7 @@ export default class TodoItem extends React.Component<propsTodo, IState>{
                     <div className={classes['button-wrapper']}>
                         <i className='fas fa-edit' onClick={()=>{this.props.changeHandler(todo, changeTodoType.text)}}/>
                         <i className="fa fa-times" onClick={()=>{this.props.changeHandler(todo, changeTodoType.remove)}}/>
-                        <i className="fas fa-ellipsis-h"/>
+                        <i className="fas fa-ellipsis-h" onClick={()=>{new CustomError("Sorry, this button don\'t working yet", true)}}/>
                     </div>
                 {/* </div> */}
             </li>
