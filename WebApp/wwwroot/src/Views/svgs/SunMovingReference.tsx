@@ -180,7 +180,7 @@ class SunMovingReference extends React.Component<{}, IState>{
 
             const sunRise : ITime = this.CreateTime(result.results.sunrise, true, false);
             const sunSet : ITime = this.CreateTime(result.results.sunset, true, true);
-            dayInfo.sunRise = this.CreateTime(result.results.sunrise, true, false);
+            dayInfo.sunRise = this.CreateTime(result.results.sunrise/*"00:59:08"*/, true, false);
             dayInfo.sunSet = this.CreateTime(result.results.sunset, true, true); 
             dayInfo.dayLength = lengthDaySeconds;
             dayInfo.nightLength = 24*60*60 - lengthDaySeconds;

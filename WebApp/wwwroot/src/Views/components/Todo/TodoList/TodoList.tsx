@@ -19,7 +19,8 @@ interface IState{
         content: React.ReactNode,
         footer: Footer,
         type: TodoListPopupsType,
-    }
+    };
+    todos: Array<ITodo>;
 }
 type TodoListPopupsType = "ADD" | "CHANGE" | "CLEAN";
 
@@ -45,7 +46,8 @@ export default class TodoList extends React.Component<{TodoStore: TodoStore, Mod
                 content: <React.Fragment></React.Fragment>
             },
             type: "CLEAN"
-        }
+        },
+        todos: [],
     }
 
     constructor(props: {TodoStore: TodoStore, ModalStore: ModalStore, AutoStore: AutoStore}){
@@ -53,10 +55,9 @@ export default class TodoList extends React.Component<{TodoStore: TodoStore, Mod
         this.state = this.initialState;
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         console.log(`тудухи загружены - ${!!this.todoStore.Todos}`);
-        const todos = this.todoStore.Todos ?? await this.todoStore.LoadTodos();
-        console.log(todos);
+        this.todoStore.LoadTodos().then(todos => this.setState({todos}));
     }
 
     todoItemChange(todo: ITodo, changeType: changeTodoType){

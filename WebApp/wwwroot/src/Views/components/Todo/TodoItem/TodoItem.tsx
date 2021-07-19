@@ -38,8 +38,6 @@ export default class TodoItem extends React.Component<propsTodo, IState>{
         const clsTextDeco = [classes.text];
         todo.isComplited ? clsTextDeco.push(classes.deco) : undefined;
 
-        console.log(`render Li-id-${todo.id} isChecked=${todo.isComplited}`);
-
         return(
             <li className={classes.Item}>
                 {/* <div className={classes['todo-wrapper']}> */}
@@ -51,7 +49,7 @@ export default class TodoItem extends React.Component<propsTodo, IState>{
                     <div className={classes['button-wrapper']}>
                         <i className='fas fa-edit' onClick={()=>{this.props.changeHandler(todo, changeTodoType.text)}}/>
                         <i className="fa fa-times" onClick={()=>{this.props.changeHandler(todo, changeTodoType.remove)}}/>
-                        <i className="fas fa-ellipsis-h" onClick={()=>{new CustomError('sorry, this button don\'t working yet')}}/>
+                        <i className="fas fa-ellipsis-h" onClick={()=>{new CustomError("Sorry, this button don\'t working yet", true)}}/>
                     </div>
                 {/* </div> */}
             </li>

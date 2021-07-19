@@ -57,8 +57,14 @@
     }
 }
 @media screen and (max-width: 767px) {
-    .AddTodo{
-        right: 60px;
-        color:rgba(0, 0, 0, 0.35);
-    }   
+    main{
+        display: flex;
+        flex-direction: column;
+        .AddTodo{
+            position: static;
+            margin-top: 20px;
+            align-self: center;
+            transform: translateY(-10px);
+        }
+    }
 }

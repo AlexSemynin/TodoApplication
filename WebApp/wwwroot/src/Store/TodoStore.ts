@@ -27,19 +27,21 @@ export default class TodoStore{
     constructor(mainStore: MainStore) {
         makeObservable(this);
         this._mainStore = mainStore;
+        this._todos = null;
     }
 
     @observable
-    private _todos: Array<ITodo> | null = null;
+    private _todos: Array<ITodo> | null;
 
     @action
-    async LoadTodos() : Promise<void|never> {
+    async LoadTodos() : Promise<Array<ITodo>|never> {
         const token = this._mainStore.AutoStore.getUser?.access_token;
         if(token){
             const todos = <Array<ITodo>> await this._mainStore.BaseSerice.GetAutho("/todos", token);
-            this._todos = todos.length ? todos.reverse() : null;
+            this._todos = todos.length ? todos.reverse() : [];
+            return this._todos;
         }else{
-            new CustomError("user not founded in localStorage :(", true);
+            throw new CustomError("user not founded in localStorage :(", true);
         }
     }
 
@@ -55,63 +57,74 @@ export default class TodoStore{
 
     @action
     async AddTodo(todo: ITodo): Promise<boolean | never> {
-       const token = this._mainStore.AutoStore.getUser?.access_token;
-       const headers = new Headers();
-       headers.append("Content-Type", "application/json");
-       headers.append("Authorization", "Bearer " + token);
-       const body = JSON.stringify({
-        text: todo.text,
-        isComplited: todo.isComplited ?? false
-    })
+        const token = this._mainStore.AutoStore.getUser?.access_token;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", "Bearer " + token);
+        const body = JSON.stringify({
+            text: todo.text,
+            isComplited: todo.isComplited ?? false
+        });
 
-       await this._mainStore.BaseSerice.PostAutho<ITodo>("/todos", {headers, body});
-       await this.LoadTodos();
-       return true;
+        await this._mainStore.BaseSerice.PostAutho<ITodo>("/todos", {headers, body});
+        await this.LoadTodos();
+        return true;
     }
 
     @action
     async UpdateTodo(todo: ITodo) {
-        const token = this._mainStore.AutoStore.getUser?.access_token;
-        const response = await fetch("api/todos", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            },
-            body: JSON.stringify(todo)
-        });
-        if(!response.ok){
-            const message = JSON.parse(await response.text()).errorText;
-            throw new Error(`Ответ сервера: ${message}`);
-        }
-        const res = <ITodo>await response.json();
-        this._todos = this._todos?.map(t => {
-            if(t.id == todo.id){
-                return res;    
+        try{
+            const token = this._mainStore.AutoStore.getUser?.access_token;
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Authorization", "Bearer " + token);
+            const response = await fetch(`/api/todos/change`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({
+                    id: todo.id,
+                    text: todo.text,
+                    isComplited: todo.isComplited
+                }), //todo - observable object !== Model.Todo
+            });
+            if(!response.ok){
+                const message = JSON.parse(await response.text()).errorText;
+                throw new Error(`Ответ сервера: ${message}`);
             }
-            return t;
-        })??null;
+            const res = <ITodo>await response.json();
+            this._todos = this._todos?.map(t => {
+                if(t.id == todo.id){
+                    return res;    
+                }
+                return t;
+            })??null;
+        }catch(e){
+            throw new CustomError(`Ошибка при изменении: ${e.message}`, true);
+        }
        
        
     }
 
     @action
     async RemoveTodo(id?: string) {
-        const token = this._mainStore.AutoStore.getUser?.access_token;
-        const response = await fetch(`api/todos/${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
+        try{
+            const token = this._mainStore.AutoStore.getUser?.access_token;
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Authorization", "Bearer " + token);
+            const response = await fetch(`/api/todos/del`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify(id),
+            });
+            if(!response.ok){
+                const message = JSON.parse(await response.text()).errorText;
+                throw new Error(`Ответ сервера: ${message}`);
             }
-        });
-        if(!response.ok){
-           const message = JSON.parse(await response.text()).errorText;
-           throw new Error(`Ответ сервера: ${message}`);
-       }
-    //    const res = await response.json();
-       this._todos = this._todos?.filter(todo => todo.id !== id)??null;
-    //    console.log(res);
+            this._todos = this._todos?.filter(todo => todo.id !== id)??null;
+        }catch(e){
+            throw new CustomError(`ошибка при удалении: ${e.message}`, true);
+        }
     }
 
 }

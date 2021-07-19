@@ -35,6 +35,7 @@ namespace WebApp.Controllers
             return Ok(todos);
         }
 
+        // POST api/<TodosController>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<Todo>> Create([FromBody] WebApp.Models.Todo todo)
@@ -56,9 +57,11 @@ namespace WebApp.Controllers
             return Ok(newTodo);
         }
 
-        [HttpPut]
+        // PUT api/<TodosController>/5
+        [HttpPost]
+        [Route("change")]
         [Authorize]
-        public async Task<ActionResult<Todo>> Put([FromBody] Models.Todo todo)
+        public async Task<ActionResult<Todo>> Change([FromBody] Models.Todo todo)
         {
             var newTodo = await _dataManager.Todos.GetTodoById(todo.Id);
             if (newTodo is null)
@@ -72,9 +75,11 @@ namespace WebApp.Controllers
             return Ok(newTodo);
         }
 
-        [HttpDelete("{id}")]
+        // DELETE api/<TodosController>/5
+        [HttpPost]
+        [Route("del")]
         [Authorize]
-        public ActionResult Delete(string id)
+        public ActionResult Delete([FromBody] string id)
         {
             try
             {
@@ -96,22 +101,5 @@ namespace WebApp.Controllers
         //     return "value";
         // }
 
-        // // POST api/<TodosController>
-        // [HttpPost]
-        // public void Post([FromBody] string value)
-        // {
-        // }
-
-        // // PUT api/<TodosController>/5
-        // [HttpPut("{id}")]
-        // public void Put(int id, [FromBody] string value)
-        // {
-        // }
-
-        // // DELETE api/<TodosController>/5
-        // [HttpDelete("{id}")]
-        // public void Delete(int id)
-        // {
-        // }
     }
 }
